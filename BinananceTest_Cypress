@@ -1,0 +1,101 @@
+//demo test
+describe('My First Test', function(){
+    it('Doesn not do much', function(){
+        expect(true).to.equal(true)
+        })     
+         
+         })
+
+//my home page as binance page
+describe('My Home Page', function(){
+    it('visit binance', function(){
+        
+        cy.visit ('https://www.binance.com/')
+        
+        // it will click on ETH/BTC child index changed based on market price so its dynamic path
+        
+       
+        cy.get(':nth-child(2) > .ReactVirtualized__Table__row',{ timeout: 10000 })
+        .click({force:true})
+        
+        // it will verify the url
+        cy.url().should('include','/trade/ETH_BTC',{ timeout: 10000 })
+    
+        
+        // it will verify the New 24h High nav-header on top of the graph
+        cy.get('.sc-1d711xa-1').contains('Last Price',{ timeout: 10000 })
+        
+        // it will verify the Limit
+        
+       
+        
+        cy.get('[data-name="limit"] > span',{ timeout: 10000 })
+            .contains('Limit',{ timeout: 10000 })
+        .click()
+        
+        //it will veryfy the market
+        cy.get('[data-name="market"] > span').contains('Market',).should('be.visible')
+        .click()
+        
+        //it will veryfy the stop Limit
+        cy.get('[data-name="stop-limit"] > :nth-child(1)').contains('Stop-Limit',{ timeout: 10000 })
+        .click()
+        
+// .blur() - Make a focused DOM element blur.
+//.focus() - Focus on a DOM element.
+//.clear() - Clear the value of an input or textarea.
+//.check() - Check checkbox(es) or radio(s).
+//.uncheck() - Uncheck checkbox(es).
+//.select() - Select an <option> within a <select>.
+//.dblclick() - Double-click a DOM element.
+//        
+// Write a second end-to-end test that
+//Starts on the Pair trading view
+        cy.visit('https://www.binance.com/en/trade/ETH_BTC',{ timeout: 50000 })
+        // it will clcik on  the Limit then Enters some valid values into the Buy ETH form
+    
+        cy.get('[data-name="limit"] > span',{ timeout: 10000 }).contains('Limit').click({force:true})
+        
+        cy.get('#FormRow-BUY-quantity',{ timeout: 10000 }).type(200)
+        
+//Make sure the Total field has the correct value (Total = price * Amount)
+        
+        // // getting the value of buy price
+        cy.get('#FormRow-BUY-price')
+        .invoke('val')
+        .then(buyPrice_text => cy.log(buyPrice_text));
+      
+    // getting the value of the quantity 
+        
+         
+         cy.get('#FormRow-BUY-quantity')
+  .invoke('val')
+  .then(buy_quantity => cy.log(buy_quantity));
+        
+        // getting the value of total ammount
+        
+        
+        cy.get('#FormRow-BUY-total')
+  .invoke('val')
+  .then(buyTotal_text => cy.log(buyTotal_text ));
+ 
+        
+//Verifies that you can't submit the form since you are not logged in
+//        //there isn't any submit button available to submit
+        cy.get(' .sc-1lt5gnu-0 :nth-child(1) >')
+        .should('include','submit')
+        
+        
+        
+//Write a data last end-to-end (WebSockets) test that
+//Starts on the Pair trading view
+//Under the hood, the UI uses WebSockets to fetch tickers
+//Verifies that the data is loaded in the tickers,
+//Verifies there is a consistent stream of data.
+//Verifies the time it takes the socket connection to connect is less than 1 second
+        })   
+    
+         
+         })
+
+
